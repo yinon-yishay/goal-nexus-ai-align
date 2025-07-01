@@ -7,10 +7,10 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { Header } from "@/components/layout/Header";
 import { Sidebar } from "@/components/layout/Sidebar";
-import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Goals from "./pages/Goals";
+import Backoffice from "./pages/Backoffice";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -71,11 +71,7 @@ const App = () => (
           <Routes>
             <Route 
               path="/" 
-              element={
-                <PublicRoute>
-                  <Landing />
-                </PublicRoute>
-              } 
+              element={<Navigate to="/login" replace />}
             />
             <Route 
               path="/login" 
@@ -98,6 +94,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <Goals />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/backoffice" 
+              element={
+                <ProtectedRoute>
+                  <Backoffice />
                 </ProtectedRoute>
               } 
             />

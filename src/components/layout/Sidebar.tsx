@@ -10,7 +10,8 @@ import {
   Users, 
   BarChart3,
   CheckSquare,
-  Settings
+  Settings,
+  UserCog
 } from 'lucide-react';
 
 interface NavItem {
@@ -56,6 +57,12 @@ const navItems: NavItem[] = [
     href: '/organization',
     icon: TrendingUp,
     roles: ['group-leader', 'ld-team']
+  },
+  {
+    title: 'Backoffice',
+    href: '/backoffice',
+    icon: UserCog,
+    roles: ['ld-team', 'group-leader']
   }
 ];
 
