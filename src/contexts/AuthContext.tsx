@@ -54,7 +54,7 @@ const getRoleFromEmail = (email: string): UserRole => {
   return 'employee'; // default role
 };
 
-const getDepartmentFromEmail = (email: string): string => {
+const getDepartmentFromEmail = (email: string): 'rd' | 'sm' | 'ga' => {
   // Simple department assignment for POC
   if (email.includes('sales') || email.includes('marketing')) return 'sm';
   if (email.includes('admin') || email.includes('hr')) return 'ga';
