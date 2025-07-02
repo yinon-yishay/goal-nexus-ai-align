@@ -26,6 +26,16 @@ const mockDashboardGoals: Goal[] = [
   }
 ];
 
+// Mock progress data for the chart
+const mockProgressData = [
+  { month: 'Jan', progress: 20 },
+  { month: 'Feb', progress: 35 },
+  { month: 'Mar', progress: 45 },
+  { month: 'Apr', progress: 55 },
+  { month: 'May', progress: 60 },
+  { month: 'Jun', progress: 65 }
+];
+
 const Dashboard = () => {
   const { user } = useAuth();
   const [goals, setGoals] = useState<Goal[]>(mockDashboardGoals);
@@ -106,14 +116,7 @@ const Dashboard = () => {
 
       {/* Chart and Recent Goals */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Progress Overview</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ProgressChart />
-          </CardContent>
-        </Card>
+        <ProgressChart data={mockProgressData} title="Monthly Progress Overview" />
 
         <Card>
           <CardHeader>
