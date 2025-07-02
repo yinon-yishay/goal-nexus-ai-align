@@ -78,6 +78,9 @@ const Goals = () => {
     department: user?.department || 'rd'
   });
 
+  // Check if user can create goals (only managers and group leaders can create goals)
+  const canCreateGoals = user?.role === 'manager' || user?.role === 'group-leader';
+
   const handleCreateGoal = () => {
     if (!newGoal.title || !newGoal.description || !newGoal.companyGoalAlignment || !newGoal.targetDate) {
       toast({
@@ -153,80 +156,100 @@ const Goals = () => {
           </p>
         </div>
         
-        <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
-          <DialogTrigger asChild>
-            <Button className="bg-primary hover:bg-primary-600">
-              <Plus className="h-4 w-4 mr-2" />
-              Create Goal
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-2xl bg-white">
-            <DialogHeader>
-              <DialogTitle>Create New Goal</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="title">Goal Title *</Label>
-                <Input
-                  id="title"
-                  placeholder="Enter your goal title"
-                  value={newGoal.title}
-                  onChange={(e) => setNewGoal({ ...newGoal, title: e.target.value })}
-                />
+        {/* Only show create goal button for managers and group leaders */}
+        {canCreateGoals && (
+          <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
+            <DialogTrigger asChild>
+              <Button className="bg-primary hover:bg-primary-600">
+                <Plus className="h-4 w-4 mr-2" />
+                Create Goal
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-2xl bg-white">
+              <DialogHeader>
+                <DialogTitle>Create New Goal</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="title">Goal Title *</Label>
+                  <Input
+                    id="title"
+                    placeholder="Enter your goal title"
+                    value={newGoal.title}
+                    onChange={(e) => setNewGoal({ ...newGoal, title: e.target.value })}
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="description">Description *</Label>
+                  <Textarea
+                    id="description"
+                    placeholder="Describe your goal in detail"
+                    rows={3}
+                    value={newGoal.description}
+                    onChange={(e) => setNewGoal({ ...newGoal, description: e.target.value })}
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="alignment">Company Goal Alignment *</Label>
+                  <Select 
+                    value={newGoal.companyGoalAlignment} 
+                    onValueChange={(value) => setNewGoal({ ...newGoal, companyGoalAlignment: value })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select company strategy alignment" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white">
+                      {companyStrategies.map((strategy, index) => (
+                        <SelectItem key={index} value={strategy}>
+                          {strategy}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="targetDate">Target Date *</Label>
+                  <Input
+                    id="targetDate"
+                    type="date"
+                    value={newGoal.targetDate}
+                    onChange={(e) => setNewGoal({ ...newGoal, targetDate: e.target.value })}
+                  />
+                </div>
+                
+                <div className="flex justify-end space-x-2 pt-4">
+                  <Button variant="outline" onClick={() => setIsCreateDialogOpen(false)}>
+                    Cancel
+                  </Button>
+                  <Button onClick={handleCreateGoal} className="bg-primary hover:bg-primary-600">
+                    Create Goal
+                  </Button>
+                </div>
               </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="description">Description *</Label>
-                <Textarea
-                  id="description"
-                  placeholder="Describe your goal in detail"
-                  rows={3}
-                  value={newGoal.description}
-                  onChange={(e) => setNewGoal({ ...newGoal, description: e.target.value })}
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="alignment">Company Goal Alignment *</Label>
-                <Select 
-                  value={newGoal.companyGoalAlignment} 
-                  onValueChange={(value) => setNewGoal({ ...newGoal, companyGoalAlignment: value })}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select company strategy alignment" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white">
-                    {companyStrategies.map((strategy, index) => (
-                      <SelectItem key={index} value={strategy}>
-                        {strategy}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="targetDate">Target Date *</Label>
-                <Input
-                  id="targetDate"
-                  type="date"
-                  value={newGoal.targetDate}
-                  onChange={(e) => setNewGoal({ ...newGoal, targetDate: e.target.value })}
-                />
-              </div>
-              
-              <div className="flex justify-end space-x-2 pt-4">
-                <Button variant="outline" onClick={() => setIsCreateDialogOpen(false)}>
-                  Cancel
-                </Button>
-                <Button onClick={handleCreateGoal} className="bg-primary hover:bg-primary-600">
-                  Create Goal
-                </Button>
-              </div>
-            </div>
-          </DialogContent>
-        </Dialog>
+            </DialogContent>
+          </Dialog>
+        )}
       </div>
+
+      {/* Show message for employees that goals are assigned by team leads */}
+      {user.role === 'employee' && (
+        <Card className="mb-6">
+          <CardContent className="pt-6">
+            <div className="text-center">
+              <Target className="h-12 w-12 text-blue-500 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Goals are assigned by your Team Lead
+              </h3>
+              <p className="text-gray-600">
+                Your team lead will create and assign goals to you. You can view and track progress on your assigned goals below.
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Search and Filter */}
       <div className="flex flex-col sm:flex-row gap-4 mb-6">
@@ -265,10 +288,12 @@ const Goals = () => {
             <p className="text-gray-600 mb-4">
               {searchTerm || statusFilter !== 'all' 
                 ? 'Try adjusting your search or filter criteria'
-                : 'Create your first goal to start tracking your progress'
+                : user.role === 'employee' 
+                  ? 'Your team lead will assign goals to you'
+                  : 'Create your first goal to start tracking your progress'
               }
             </p>
-            {!searchTerm && statusFilter === 'all' && (
+            {!searchTerm && statusFilter === 'all' && canCreateGoals && (
               <Button onClick={() => setIsCreateDialogOpen(true)} className="bg-primary hover:bg-primary-600">
                 <Plus className="h-4 w-4 mr-2" />
                 Create Your First Goal
