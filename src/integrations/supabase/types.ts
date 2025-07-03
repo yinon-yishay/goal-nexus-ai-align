@@ -9,7 +9,162 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      monthly_questionnaires: {
+        Row: {
+          created_at: string | null
+          due_date: string
+          employee_id: string
+          employee_name: string
+          id: string
+          manager_id: string
+          month: number
+          status: Database["public"]["Enums"]["questionnaire_status"] | null
+          updated_at: string | null
+          year: number
+        }
+        Insert: {
+          created_at?: string | null
+          due_date: string
+          employee_id: string
+          employee_name: string
+          id?: string
+          manager_id: string
+          month: number
+          status?: Database["public"]["Enums"]["questionnaire_status"] | null
+          updated_at?: string | null
+          year: number
+        }
+        Update: {
+          created_at?: string | null
+          due_date?: string
+          employee_id?: string
+          employee_name?: string
+          id?: string
+          manager_id?: string
+          month?: number
+          status?: Database["public"]["Enums"]["questionnaire_status"] | null
+          updated_at?: string | null
+          year?: number
+        }
+        Relationships: []
+      }
+      progress_evaluations: {
+        Row: {
+          ai_suggestions: string | null
+          areas_for_improvement: string | null
+          created_at: string | null
+          employee_message: string | null
+          goals_on_track: boolean
+          id: string
+          manager_comments: string | null
+          overall_rating: Database["public"]["Enums"]["progress_evaluation"]
+          questionnaire_id: string | null
+          slack_message_sent: boolean | null
+        }
+        Insert: {
+          ai_suggestions?: string | null
+          areas_for_improvement?: string | null
+          created_at?: string | null
+          employee_message?: string | null
+          goals_on_track: boolean
+          id?: string
+          manager_comments?: string | null
+          overall_rating: Database["public"]["Enums"]["progress_evaluation"]
+          questionnaire_id?: string | null
+          slack_message_sent?: boolean | null
+        }
+        Update: {
+          ai_suggestions?: string | null
+          areas_for_improvement?: string | null
+          created_at?: string | null
+          employee_message?: string | null
+          goals_on_track?: boolean
+          id?: string
+          manager_comments?: string | null
+          overall_rating?: Database["public"]["Enums"]["progress_evaluation"]
+          questionnaire_id?: string | null
+          slack_message_sent?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "progress_evaluations_questionnaire_id_fkey"
+            columns: ["questionnaire_id"]
+            isOneToOne: false
+            referencedRelation: "monthly_questionnaires"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      questionnaire_responses: {
+        Row: {
+          created_at: string | null
+          id: string
+          question: string
+          questionnaire_id: string | null
+          response: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          question: string
+          questionnaire_id?: string | null
+          response: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          question?: string
+          questionnaire_id?: string | null
+          response?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "questionnaire_responses_questionnaire_id_fkey"
+            columns: ["questionnaire_id"]
+            isOneToOne: false
+            referencedRelation: "monthly_questionnaires"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      slack_messages: {
+        Row: {
+          employee_id: string
+          id: string
+          message_content: string
+          message_type: string
+          questionnaire_id: string | null
+          sent_at: string | null
+          slack_response: Json | null
+        }
+        Insert: {
+          employee_id: string
+          id?: string
+          message_content: string
+          message_type: string
+          questionnaire_id?: string | null
+          sent_at?: string | null
+          slack_response?: Json | null
+        }
+        Update: {
+          employee_id?: string
+          id?: string
+          message_content?: string
+          message_type?: string
+          questionnaire_id?: string | null
+          sent_at?: string | null
+          slack_response?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "slack_messages_questionnaire_id_fkey"
+            columns: ["questionnaire_id"]
+            isOneToOne: false
+            referencedRelation: "monthly_questionnaires"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -18,7 +173,8 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      progress_evaluation: "excellent" | "good" | "needs_improvement" | "poor"
+      questionnaire_status: "pending" | "completed" | "overdue"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -133,6 +289,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      progress_evaluation: ["excellent", "good", "needs_improvement", "poor"],
+      questionnaire_status: ["pending", "completed", "overdue"],
+    },
   },
 } as const
