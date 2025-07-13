@@ -70,7 +70,7 @@ const TestDashboard = () => {
           employeeId: 'test-employee',
           message: 'This is a test message from the questionnaire system!',
           messageType: 'positive',
-          questionnaireId: 'test-id'
+          questionnaireId: null
         }
       });
       
