@@ -1,1 +1,10 @@
 project_id = "gobwrdkudhqobtyzmstd"
+
+[functions.send-slack-message]
+verify_jwt = false
+
+[functions.generate-employee-message]
+verify_jwt = false
+
+[functions.monthly-scheduler]
+verify_jwt = false

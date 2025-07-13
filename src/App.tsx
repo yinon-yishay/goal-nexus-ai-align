@@ -11,6 +11,7 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Goals from "./pages/Goals";
 import Backoffice from "./pages/Backoffice";
+import MonthlyQuestionnaire from "./pages/MonthlyQuestionnaire";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -120,10 +121,7 @@ const App = () => (
               path="/progress" 
               element={
                 <ProtectedRoute>
-                  <div className="p-6">
-                    <h1 className="text-3xl font-bold">Progress Tracking</h1>
-                    <p className="text-gray-600 mt-2">Monthly progress check-ins and updates (Coming Soon)</p>
-                  </div>
+                  <MonthlyQuestionnaire />
                 </ProtectedRoute>
               } 
             />
