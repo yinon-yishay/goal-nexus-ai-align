@@ -12,6 +12,7 @@ import Dashboard from "./pages/Dashboard";
 import Goals from "./pages/Goals";
 import Backoffice from "./pages/Backoffice";
 import MonthlyQuestionnaire from "./pages/MonthlyQuestionnaire";
+import TestDashboard from "./pages/TestDashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -144,6 +145,14 @@ const App = () => (
                     <h1 className="text-3xl font-bold">Organization Overview</h1>
                     <p className="text-gray-600 mt-2">Organization-wide performance tracking (Coming Soon)</p>
                   </div>
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/test" 
+              element={
+                <ProtectedRoute>
+                  <TestDashboard />
                 </ProtectedRoute>
               } 
             />
