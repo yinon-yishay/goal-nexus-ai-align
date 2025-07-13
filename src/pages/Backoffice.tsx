@@ -124,7 +124,8 @@ const Backoffice = () => {
 
     const user: User = {
       id: (users.length + 1).toString(),
-      ...newUser
+      ...newUser,
+      managerId: newUser.managerId === 'none' ? undefined : newUser.managerId
     };
 
     setUsers([...users, user]);
@@ -239,7 +240,7 @@ const Backoffice = () => {
                   <SelectValue placeholder="Select a manager" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">No manager</SelectItem>
+                  <SelectItem value="none">No manager</SelectItem>
                   {managers.map(manager => (
                     <SelectItem key={manager.id} value={manager.id}>
                       {manager.name} ({getRoleDisplayName(manager.role)})
